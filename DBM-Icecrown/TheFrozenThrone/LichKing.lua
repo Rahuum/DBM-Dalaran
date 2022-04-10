@@ -72,8 +72,8 @@ local specWarnValkyrLow		= mod:NewSpecialWarning("SpecWarnValkyrLow", nil, nil, 
 local specWarnEnrage		= mod:NewSpecialWarningSpell(72143, "Tank")
 local specWarnEnrageLow		= mod:NewSpecialWarningSpell(28747, false)
 
-local timerCombatStart		= mod:NewCombatTimer(55)
-local timerPhaseTransition	= mod:NewTimer(62.5, "PhaseTransition", 72262, nil, nil, 6)
+local timerCombatStart		= mod:NewCombatTimer(53.5)
+local timerPhaseTransition	= mod:NewTimer(6, "PhaseTransition", 72262, nil, nil, 6)
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 69409, nil, "Tank|Healer|TargetedCooldown")
 local timerSoulreaperCD	 	= mod:NewNextTimer(30.5, 69409, nil, "Tank|Healer|TargetedCooldown", nil, 5, nil, DBM_CORE_L.TANK_ICON)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 68980)
@@ -84,9 +84,9 @@ local timerNecroticPlagueCD	= mod:NewNextTimer(30, 70337, nil, nil, nil, 3)
 local timerDefileCD			= mod:NewNextTimer(32.5, 72762, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, 2, 4)
 local timerEnrageCD			= mod:NewCDTimer(20, 72143, nil, "Tank|RemoveEnrage", nil, 5, nil, DBM_CORE_L.ENRAGE_ICON)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372, nil, nil, nil, 1)
-local timerDrudgeGhouls 	= mod:NewNextTimer(30, 70358, nil, nil, nil, 1)
-local timerRagingSpiritCD	= mod:NewNextCountTimer(20, 69200, nil, nil, nil, 1)
-local timerSoulShriekCD		= mod:NewCDTimer(12, 69242, nil, nil, nil, 1)
+local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358, nil, nil, nil, 1)
+local timerRagingSpiritCD	= mod:NewNextCountTimer(22, 69200, nil, nil, nil, 1)  
+local timerSoulShriekCD		= mod:NewCDTimer(12, 69242, nil, nil, nil, 1)  -- TODO: DALAWOW
 local timerSummonValkyr 	= mod:NewCDTimer(45, 71844, nil, nil, nil, 1)
 local timerVileSpirit 		= mod:NewNextTimer(30.5, 70498, nil, nil, nil, 1)
 local timerTrapCD		 	= mod:NewNextTimer(15.5, 73539, nil, nil, nil, 3, nil, DBM_CORE_L.DEADLY_ICON, nil, nil, 4)
@@ -152,7 +152,7 @@ local function NextPhase(self)
 		timerDrudgeGhouls:Start(10)
 		if self:IsHeroic() then
 			timerTrapCD:Start()
-			timerNecroticPlagueCD:Start(30)
+			timerNecroticPlagueCD:Start(27)  -- TODO: DALAWOW (is this 30?)
 		else
 			timerNecroticPlagueCD:Start(27)
 		end
@@ -162,7 +162,7 @@ local function NextPhase(self)
 		if self.Options.ShowFrame then
 			self:CreateFrame()
 		end
-		timerSummonValkyr:Start(18.5)
+		timerSummonValkyr:Start(20)
 		timerSoulreaperCD:Start(40)
 		soundSoulReaperSoon:Schedule(40-2.5, "Interface\\AddOns\\DBM-Core\\sounds\\RaidAbilities\\soulreaperSoon.mp3")
 		timerDefileCD:Start(37.5)
@@ -173,13 +173,13 @@ local function NextPhase(self)
 	elseif self.vb.phase == 3 then
 		warnPhase3:Show()
 		warnPhase3:Play("phasechange")
-		timerVileSpirit:Start(17)
-		timerSoulreaperCD:Start(37.5)
-		soundSoulReaperSoon:Schedule(37.5-2.5, "Interface\\AddOns\\DBM-Core\\sounds\\RaidAbilities\\soulreaperSoon.mp3")
-		timerDefileCD:Start(33.5)
+		timerVileSpirit:Start(20)
+		timerSoulreaperCD:Start(40)
+		soundSoulReaperSoon:Schedule(40-2.5, "Interface\\AddOns\\DBM-Core\\sounds\\RaidAbilities\\soulreaperSoon.mp3")
+		timerDefileCD:Start(43)
 		timerHarvestSoulCD:Start(14)
-		warnDefileSoon:Schedule(30)
-		warnDefileSoon:ScheduleVoice(30, "scatter")
+		warnDefileSoon:Schedule(39.5)
+		warnDefileSoon:ScheduleVoice(39.5, "scatter")
 	end
 end
 
@@ -379,7 +379,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnRagingSpirit:Show(args.destName)
 		end
 		if self.vb.phase == 1 then
-			timerRagingSpiritCD:Start(nil, self.vb.ragingSpiritCount)
+			timerRagingSpiritCD:Start(22, self.vb.ragingSpiritCount)
 		else
 			timerRagingSpiritCD:Start(17, self.vb.ragingSpiritCount)
 		end
@@ -401,7 +401,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(73654, 74295, 74296, 74297) then -- Harvest Souls (Heroic)
 		specWarnHarvestSouls:Show()
 		--specWarnHarvestSouls:Play("phasechange")
-		timerHarvestSoulCD:Start(107) -- Custom edit to make Harvest Souls timers work again
+		timerHarvestSoulCD:Start(75)  -- TODO: DALAWOW (is this right? original was 107)
 		timerVileSpirit:Cancel()
 		timerSoulreaperCD:Cancel()
 		soundSoulReaperSoon:Cancel()
