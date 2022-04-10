@@ -91,7 +91,7 @@ end
 DBM = {
 	Revision = ("$Revision: 7010 $"):sub(12, -3),
 	Version = "7.10",
-	DisplayVersion = "7.10 DBM-Warmane by Zidras", -- the string that is shown as version
+	DisplayVersion = "7.10 DBM-Dalaran by Rahuum", -- the string that is shown as version
 	ReleaseRevision = 7010 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
 DBM.HighestRelease = DBM.ReleaseRevision --Updated if newer version is detected, used by update nags to reflect critical fixes user is missing on boss pulls
@@ -1864,13 +1864,17 @@ do
 			elseif savedDifficulty:find("normal") then
 				SendChatMessage(L.ANNOUNCE_PULL_MODE:format(PLAYER_DIFFICULTY1), channel)
 			end
-			SendChatMessage(L.ANNOUNCE_PULL:format(timer, playerName), channel)
+			if timer > 0 then 
+			    SendChatMessage(L.ANNOUNCE_PULL:format(timer, playerName), channel) 
+			else
+			    SendChatMessage("Pull Timer Canceled!", channel)
+            end
 			if timer > 7 then DBM:Schedule(timer - 7, SendChatMessage, L.ANNOUNCE_PULL:format(7, playerName), channel) end
 			if timer > 5 then DBM:Schedule(timer - 5, SendChatMessage, L.ANNOUNCE_PULL:format(5, playerName), channel) end
 			if timer > 3 then DBM:Schedule(timer - 3, SendChatMessage, L.ANNOUNCE_PULL:format(3, playerName), channel) end
 			if timer > 2 then DBM:Schedule(timer - 2, SendChatMessage, L.ANNOUNCE_PULL:format(2, playerName), channel) end
 			if timer > 1 then DBM:Schedule(timer - 1, SendChatMessage, L.ANNOUNCE_PULL:format(1, playerName), channel) end
-			DBM:Schedule(timer, SendChatMessage, L.ANNOUNCE_PULL_NOW, channel)
+			if timer > 0 then DBM:Schedule(timer, SendChatMessage, L.ANNOUNCE_PULL_NOW, channel) end
 		end
 	end
 
@@ -1941,10 +1945,14 @@ do
 		end
 	end
 	SLASH_DEADLYBOSSMODSPULL1 = "/pull"
+	SLASH_DEADLYBOSSMODSCANCELPULL1 = "/cancelpull"
 	SLASH_DEADLYBOSSMODSBREAK1 = "/break"
 	SlashCmdList["DEADLYBOSSMODSPULL"] = function(msg)
 		Pull(tonumber(msg) or 10)
 	end
+	SlashCmdList["DEADLYBOSSMODSCANCELPULL"] = function(msg)
+	    Pull(0)
+    end
 	SlashCmdList["DEADLYBOSSMODSBREAK"] = function(msg)
 		Break(tonumber(msg) or 10)
 	end
@@ -4051,7 +4059,7 @@ do
 							else
 								DBM:AddMsg(L.UPDATEREMINDER_HEADER:match("([^\n]*)"))
 								DBM:AddMsg(L.UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
-								DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[https://github.com/Zidras/DBM-Warmane]"):format(displayVersion, revision))
+								DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[https://github.com/Rahuum/DBM-Dalaran]"):format(displayVersion, revision))
 							end
 						end
 					end
@@ -4676,7 +4684,7 @@ do
 	end
 
 	function DBM:ShowUpdateReminder(newVersion, newRevision, text, url)
-		urlText = url or L.UPDATEREMINDER_URL or "https://github.com/Zidras/DBM-Warmane"
+		urlText = url or L.UPDATEREMINDER_URL or "https://github.com/Rahuum/DBM-Dalaran"
 		if not frame then
 			createFrame()
 		else
