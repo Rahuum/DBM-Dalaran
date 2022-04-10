@@ -4,10 +4,8 @@
 
 [![Game Version](https://img.shields.io/badge/wow-3.3.5-blue.svg)](https://github.com/Rahuum/DBM-Dalaran)
 [![GitHub Actions](https://github.com/Rahuum/DBM-Dalaran/workflows/lint/badge.svg?branch=main&event=push)](https://github.com/Rahuum/DBM-Dalaran/actions?query=workflow%3Alint+branch%3Amain)
-[![Discord](https://img.shields.io/discord/598993375479463946.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/JQ2sveVE5r)
+[![Discord](https://img.shields.io/discord/688555481710854244.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/JQ2sveVE5r)
 
-
-</div>e
 
 Core addon backport from retail by Barsoomx: (https://github.com/Barsoomx/DBM-wowcircle).
 Based off Zidras' work: (https://github.com/Zidras/DBM-Warmane)
