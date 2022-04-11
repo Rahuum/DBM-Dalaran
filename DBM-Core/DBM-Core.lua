@@ -1864,11 +1864,11 @@ do
 			elseif savedDifficulty:find("normal") then
 				SendChatMessage(L.ANNOUNCE_PULL_MODE:format(PLAYER_DIFFICULTY1), channel)
 			end
-			if timer > 0 then 
-			    SendChatMessage(L.ANNOUNCE_PULL:format(timer, playerName), channel) 
+			if timer > 0 then
+			    SendChatMessage(L.ANNOUNCE_PULL:format(timer, playerName), channel)
 			else
 			    SendChatMessage("Pull Timer Canceled!", channel)
-            end
+			end
 			if timer > 7 then DBM:Schedule(timer - 7, SendChatMessage, L.ANNOUNCE_PULL:format(7, playerName), channel) end
 			if timer > 5 then DBM:Schedule(timer - 5, SendChatMessage, L.ANNOUNCE_PULL:format(5, playerName), channel) end
 			if timer > 3 then DBM:Schedule(timer - 3, SendChatMessage, L.ANNOUNCE_PULL:format(3, playerName), channel) end
